@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import Members from "./components/Members";
+import MemberLoans from "./components/MembersLoans";
+import Books from "./components/Books";
+import Transactions from "./components/Transactions";
+import PrivateRoute from "./components/PrivateRoute";  // Importa aquí
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Router future={{ v7_startTransition: true }}>
+      <Routes>
+        {/* Ruta pública */}
+        <Route path="/" element={<Login />} />
+
+        {/* Rutas protegidas */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Route path="members" element={<Members />} />
+          <Route path="members/:id/loans" element={<MemberLoans />} />
+          <Route path="books" element={<Books />} />
+          <Route path="transactions" element={<Transactions />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
